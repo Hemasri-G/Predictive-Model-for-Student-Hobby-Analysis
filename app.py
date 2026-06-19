@@ -31,7 +31,7 @@ def set_background(image_file):
         unsafe_allow_html=True
     )
 
-set_background("C:/Users/hemas/OneDrive/画像/hobby 5.png")
+set_background("hobby 5.png")
 
 st.markdown("""
 <style>

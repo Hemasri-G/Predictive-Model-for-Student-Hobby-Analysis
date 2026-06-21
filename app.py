@@ -137,10 +137,10 @@ if "model" not in st.session_state:
 
 if "encoder" not in st.session_state:
     st.session_state.encoder = None
-    
+
 if "username" not in st.session_state:
     st.session_state.username = ""
-    
+
 if "quiz_index" not in st.session_state:
     st.session_state.quiz_index = 0
 
@@ -152,7 +152,7 @@ if "answered" not in st.session_state:
 
 if "page" not in st.session_state:
     st.session_state.page = None
-    
+
 if "feedback_page" not in st.session_state:
     st.session_state.feedback_page = False
 
@@ -195,7 +195,7 @@ if not st.session_state.login:
 else:
 
     st.sidebar.success(f"Logged in as: {st.session_state.username}")
-    
+
     menu = st.sidebar.selectbox(
         "Menu",
         [
@@ -206,419 +206,420 @@ else:
             "Load Model",
             "Prediction"
         ]
-        
+
     )
-    
-    
+
+
     st.sidebar.markdown("---")
     st.sidebar.subheader("🧠 Brain Booster")
 
     if st.sidebar.button("Puzzles & Games"):
         st.session_state.page = "games"
     if st.sidebar.button("Feedback"):
-        st.session_state.page = "feedback"   
-   # =========================
-# FEEDBACK PAGE
-# =========================
-if st.session_state.page=="feedback":
-
-    st.title("📝 Feedback Section")
-
-    feedback = st.text_area("Write your feedback about the app:")
-
-    if st.button("Submit Feedback"):
-        st.success("Thank you for your feedback!")
-
-    st.stop()
-# =========================
-# PUZZLES & GAMES PAGE
-# =========================
-
-
-elif st.session_state.page == "games":
-
-    st.title("🎮 Hobby & Student Life Puzzle Zone")
-
-    game_type = st.selectbox(
-        "Choose Game Type",
-        ["MCQ Quiz", "Statistical Puzzles"]
-    )
+        st.session_state.page = "feedback"
 
     # =========================
-    # MCQ QUIZ
+    # FEEDBACK PAGE
     # =========================
-    if game_type == "MCQ Quiz":
+    if st.session_state.page == "feedback":
 
-        quiz_questions = [
-            {
-                "question": "A student spends most time drawing and designing. What hobby is likely?",
-                "options": ["Sports", "Arts", "Gaming", "Reading"],
-                "answer": "Arts"
-            },
-            {
-                "question": "If a student practices cricket daily, what hobby category is this?",
-                "options": ["Arts", "Sports", "Music", "Coding"],
-                "answer": "Sports"
-            },
-            {
-                "question": "Which activity improves logical thinking the most?",
-                "options": ["Painting", "Chess", "Dancing", "Singing"],
-                "answer": "Chess"
-            }
-        ]
+        st.title("📝 Feedback Section")
 
-        q_index = st.session_state.quiz_index
-        q = quiz_questions[q_index]
+        feedback = st.text_area("Write your feedback about the app:")
 
-        st.subheader(f"Q{q_index + 1}: {q['question']}")
+        if st.button("Submit Feedback"):
+            st.success("Thank you for your feedback!")
 
-        selected = st.radio("Choose answer:", q["options"], key=f"q_{q_index}")
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            if st.button("Submit Answer"):
-                if not st.session_state.answered:
-
-                    if selected == q["answer"]:
-                        st.success("Correct Answer ✅")
-                        st.session_state.quiz_score += 1
-                    else:
-                        st.error(f"Wrong ❌ | Correct Answer: {q['answer']}")
-
-                    st.session_state.answered = True
-
-        with col2:
-            if st.session_state.answered:
-                if st.button("Next Question"):
-                    st.session_state.quiz_index += 1
-                    st.session_state.answered = False
-                    st.rerun()
-
-        st.sidebar.write("🎯 Score:", st.session_state.quiz_score)
-
+        st.stop()
 
     # =========================
-    # STATISTICAL PUZZLES
+    # PUZZLES & GAMES PAGE
     # =========================
-    elif game_type == "Statistical Puzzles":
 
-        import random
+    elif st.session_state.page == "games":
 
-        puzzle_type = st.selectbox(
-            "Choose Statistical Puzzle",
-            [
-                "Mean",
-                "Probability",
-                "Percentage",
-                "Mode",
-                "Data Interpretation",
-                "Median",
-                "Thinking"
-            ]
+        st.title("🎮 Hobby & Student Life Puzzle Zone")
+
+        game_type = st.selectbox(
+            "Choose Game Type",
+            ["MCQ Quiz", "Statistical Puzzles"]
         )
 
-        st.markdown("---")
+        # =========================
+        # MCQ QUIZ
+        # =========================
+        if game_type == "MCQ Quiz":
 
-        # MEAN
-        if puzzle_type == "Mean":
-            q = random.choice([
-                {"q": "Mean of 10,20,30,40?", "a": 25},
-                {"q": "Mean of 5,15,25?", "a": 15}
-                
-            ])
+            quiz_questions = [
+                {
+                    "question": "A student spends most time drawing and designing. What hobby is likely?",
+                    "options": ["Sports", "Arts", "Gaming", "Reading"],
+                    "answer": "Arts"
+                },
+                {
+                    "question": "If a student practices cricket daily, what hobby category is this?",
+                    "options": ["Arts", "Sports", "Music", "Coding"],
+                    "answer": "Sports"
+                },
+                {
+                    "question": "Which activity improves logical thinking the most?",
+                    "options": ["Painting", "Chess", "Dancing", "Singing"],
+                    "answer": "Chess"
+                }
+            ]
 
-            st.write(q["q"])
-            ans = st.number_input("Answer", key="mean")
+            q_index = st.session_state.quiz_index
+            q = quiz_questions[q_index]
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 📊")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+            st.subheader(f"Q{q_index + 1}: {q['question']}")
 
-        # PROBABILITY
-        elif puzzle_type == "Probability":
-            q = {"q": "3 red, 2 blue balls. Probability red?", "a": "3/5"}
+            selected = st.radio("Choose answer:", q["options"], key=f"q_{q_index}")
 
-            st.write(q["q"])
-            ans = st.radio("Choose:", ["3/5", "2/5", "1/2", "1/6"])
+            col1, col2 = st.columns(2)
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 🎯")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+            with col1:
+                if st.button("Submit Answer"):
+                    if not st.session_state.answered:
 
-        # PERCENTAGE
-        elif puzzle_type == "Percentage":
-            q = {"q": "20% of 150?", "a": 30}
+                        if selected == q["answer"]:
+                            st.success("Correct Answer ✅")
+                            st.session_state.quiz_score += 1
+                        else:
+                            st.error(f"Wrong ❌ | Correct Answer: {q['answer']}")
 
-            st.write(q["q"])
-            ans = st.number_input("Answer", key="percent",min_value=1, max_value=50, step=1)
+                        st.session_state.answered = True
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 📈")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+            with col2:
+                if st.session_state.answered:
+                    if st.button("Next Question"):
+                        st.session_state.quiz_index += 1
+                        st.session_state.answered = False
+                        st.rerun()
 
-        # MODE
-        elif puzzle_type == "Mode":
-            q = {"q": "Find mode: 2,3,3,5,7", "a": 3}
+            st.sidebar.write("🎯 Score:", st.session_state.quiz_score)
 
-            st.write(q["q"])
-            ans = st.number_input("Answer", key="mode",min_value=1, max_value=50, step=1)
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 📊")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+        # =========================
+        # STATISTICAL PUZZLES
+        # =========================
+        elif game_type == "Statistical Puzzles":
 
-        # DATA
-        elif puzzle_type == "Data Interpretation":
-            q = {"q": "Arts:10, Sports:15, Music:5 → Most popular?", "a": "Sports"}
+            import random
 
-            st.write(q["q"])
-            ans = st.selectbox("Answer", ["Arts", "Sports", "Music"])
+            puzzle_type = st.selectbox(
+                "Choose Statistical Puzzle",
+                [
+                    "Mean",
+                    "Probability",
+                    "Percentage",
+                    "Mode",
+                    "Data Interpretation",
+                    "Median",
+                    "Thinking"
+                ]
+            )
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 📊")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+            st.markdown("---")
 
-        # MEDIAN
-        elif puzzle_type == "Median":
-            q = {"q": "Median of 5,10,15?", "a": 10}
+            # MEAN
+            if puzzle_type == "Mean":
+                q = random.choice([
+                    {"q": "Mean of 10,20,30,40?", "a": 25},
+                    {"q": "Mean of 5,15,25?", "a": 15}
 
-            st.write(q["q"])
-            ans = st.number_input("Answer", key="Median",min_value=1, max_value=50, step=1)
+                ])
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 📊")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
+                st.write(q["q"])
+                ans = st.number_input("Answer", key="mean")
 
-        # THINKING
-        elif puzzle_type == "Thinking":
-            q = {"q": "Best for analysis?", "a": "Large dataset"}
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 📊")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-            st.write(q["q"])
-            ans = st.radio("Choose:", ["One value", "Large dataset", "Random guess", "Opinion"])
+            # PROBABILITY
+            elif puzzle_type == "Probability":
+                q = {"q": "3 red, 2 blue balls. Probability red?", "a": "3/5"}
 
-            if st.button("Check"):
-                if ans == q["a"]:
-                    st.success("Correct 🧠")
-                else:
-                    st.error(f"Wrong ❌ {q['a']}")
-       
-                          
-    
-elif st.session_state.page is None:
-    
-    # =========================
-    # UPLOAD
-    # =========================
+                st.write(q["q"])
+                ans = st.radio("Choose:", ["3/5", "2/5", "1/2", "1/6"])
 
-    if menu == "Upload Dataset":
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 🎯")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-        st.title("Upload Dataset")
+            # PERCENTAGE
+            elif puzzle_type == "Percentage":
+                q = {"q": "20% of 150?", "a": 30}
 
-        file = st.file_uploader("Hobby_Data.csv", type=["csv"])
+                st.write(q["q"])
+                ans = st.number_input("Answer", key="percent", min_value=1, max_value=50, step=1)
 
-        if file:
-            df = pd.read_csv(file)
-            st.session_state.df = df
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 📈")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-            st.success("Dataset Loaded")
-            st.dataframe(df)
+            # MODE
+            elif puzzle_type == "Mode":
+                q = {"q": "Find mode: 2,3,3,5,7", "a": 3}
 
-    # =========================
-    # VIEW
-    # =========================
+                st.write(q["q"])
+                ans = st.number_input("Answer", key="mode", min_value=1, max_value=50, step=1)
 
-    elif menu == "View Dataset":
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 📊")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-        st.title("Dataset")
+            # DATA
+            elif puzzle_type == "Data Interpretation":
+                q = {"q": "Arts:10, Sports:15, Music:5 → Most popular?", "a": "Sports"}
 
-        if st.session_state.df is not None:
-            st.subheader("First 10 Rows")
-            st.dataframe(st.session_state.df.head(10))
-            
-            st.subheader("Complete Dataset")
-            st.dataframe(st.session_state.df)
-        else:
-            st.warning("Upload dataset first")
+                st.write(q["q"])
+                ans = st.selectbox("Answer", ["Arts", "Sports", "Music"])
 
-    # =========================
-    # CLEANING + ENCODING
-    # =========================
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 📊")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-   elif menu == "Data Cleaning":
+            # MEDIAN
+            elif puzzle_type == "Median":
+                q = {"q": "Median of 5,10,15?", "a": 10}
 
-        st.title("Data Cleaning")
+                st.write(q["q"])
+                ans = st.number_input("Answer", key="Median", min_value=1, max_value=50, step=1)
 
-        df = st.session_state.df
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 📊")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-        if df is None:
-            st.warning("Upload dataset first")
+            # THINKING
+            elif puzzle_type == "Thinking":
+                q = {"q": "Best for analysis?", "a": "Large dataset"}
 
-        else:
+                st.write(q["q"])
+                ans = st.radio("Choose:", ["One value", "Large dataset", "Random guess", "Opinion"])
 
-            st.write("Column names:", list(df.columns))
-            st.write("Column types:", df.dtypes)
+                if st.button("Check"):
+                    if ans == q["a"]:
+                        st.success("Correct 🧠")
+                    else:
+                        st.error(f"Wrong ❌ {q['a']}")
 
-            st.write("Missing Values")
-            st.write(df.isnull().sum())
 
-            st.write("Duplicates:", df.duplicated().sum())
+    elif st.session_state.page is None:
 
-            if st.button("Remove Duplicates"):
-                df = df.drop_duplicates()
+        # =========================
+        # UPLOAD
+        # =========================
+
+        if menu == "Upload Dataset":
+
+            st.title("Upload Dataset")
+
+            file = st.file_uploader("Hobby_Data.csv", type=["csv"])
+
+            if file:
+                df = pd.read_csv(file)
+                df.columns = df.columns.str.strip()
                 st.session_state.df = df
-                st.success("Removed")
 
-            if st.button("Apply Encoding"):
+                st.success("Dataset Loaded")
+                st.dataframe(df)
 
-                target_col = "Predicted Hobby"
+        # =========================
+        # VIEW
+        # =========================
 
-                if target_col not in df.columns:
-                    st.error(f"Column '{target_col}' not found! Actual columns: {list(df.columns)}")
-                else:
-                    feature_cols = [c for c in df.columns if c != target_col]
+        elif menu == "View Dataset":
 
-                    for col in feature_cols:
-                        if df[col].dtype == "object":
-                            le = LabelEncoder()
-                            df[col] = le.fit_transform(df[col].astype(str))
+            st.title("Dataset")
 
-                    target_encoder = LabelEncoder()
-                    df[target_col] = target_encoder.fit_transform(df[target_col].astype(str))
+            if st.session_state.df is not None:
+                st.subheader("First 10 Rows")
+                st.dataframe(st.session_state.df.head(10))
 
-                    joblib.dump(target_encoder, "target_encoder.pkl")
+                st.subheader("Complete Dataset")
+                st.dataframe(st.session_state.df)
+            else:
+                st.warning("Upload dataset first")
 
+        # =========================
+        # CLEANING + ENCODING
+        # =========================
+
+        elif menu == "Data Cleaning":
+
+            st.title("Data Cleaning")
+
+            df = st.session_state.df
+
+            if df is None:
+                st.warning("Upload dataset first")
+
+            else:
+
+                st.write("Column names:", list(df.columns))
+                st.write("Column types:")
+                st.write(df.dtypes.astype(str))
+
+                st.write("Missing Values")
+                st.write(df.isnull().sum())
+
+                st.write("Duplicates:", df.duplicated().sum())
+
+                if st.button("Remove Duplicates"):
+                    df = df.drop_duplicates()
                     st.session_state.df = df
+                    st.success("Removed")
 
-                    st.success("Encoding Done")
-                    st.dataframe(df.head())
+                if st.button("Apply Encoding"):
 
-    # =========================
-    # TRAIN MODEL
-    # =========================
+                    target_col = "Predicted Hobby"
 
-    elif menu == "Train Model":
+                    if target_col not in df.columns:
+                        st.error(f"Column '{target_col}' not found! Actual columns: {list(df.columns)}")
+                    else:
+                        feature_cols = [col for col in df.columns if col != target_col]
 
-        st.title("Train Model")
+                        for col in feature_cols:
+                            if df[col].dtype == "object":
+                                le = LabelEncoder()
+                                df[col] = le.fit_transform(df[col].astype(str))
 
-        df = st.session_state.df
+                        target_encoder = LabelEncoder()
+                        df[target_col] = target_encoder.fit_transform(df[target_col].astype(str))
 
-        if df is None:
-            st.warning("Upload dataset first")
+                        joblib.dump(target_encoder, "target_encoder.pkl")
 
-        else:
+                        st.session_state.df = df
 
-            target_col = st.selectbox("Select Target Column", df.columns)
+                        st.success("Encoding Done")
+                        st.dataframe(df.head())
 
-            if st.button("Train the Model"):
+        # =========================
+        # TRAIN MODEL
+        # =========================
 
-                X = df.drop(target_col, axis=1)
-                y = df[target_col]
+        elif menu == "Train Model":
 
-                X_train, X_test, y_train, y_test = train_test_split(
-                    X, y, test_size=0.2, random_state=42
-                )
+            st.title("Train Model")
 
-                sm = SMOTE(random_state=42)
-                X_train, y_train = sm.fit_resample(X_train, y_train)
+            df = st.session_state.df
 
-                model = DecisionTreeClassifier(random_state=42)
-                model.fit(X_train, y_train)
+            if df is None:
+                st.warning("Upload dataset first")
 
-                y_pred = model.predict(X_test)
-                acc = accuracy_score(y_test, y_pred)
+            else:
 
-                joblib.dump(model, "hobby.pkl")
+                target_col = st.selectbox("Select Target Column", df.columns)
 
-                st.success("Model Trained Successfully")
-                st.write("Accuracy:", round(acc * 100, 2), "%")
+                if st.button("Train the Model"):
 
-    # =========================
-    # LOAD MODEL (NEW MENU)
-    # =========================
+                    X = df.drop(target_col, axis=1)
+                    y = df[target_col]
 
-    elif menu == "Load Model":
+                    X_train, X_test, y_train, y_test = train_test_split(
+                        X, y, test_size=0.2, random_state=42
+                    )
 
-        st.title("Load Saved Model")
+                    sm = SMOTE(random_state=42)
+                    X_train, y_train = sm.fit_resample(X_train, y_train)
 
-        try:
-            st.session_state.model = joblib.load("hobby.pkl")
-            st.session_state.encoder = joblib.load("target_encoder.pkl")
+                    model = DecisionTreeClassifier(random_state=42)
+                    model.fit(X_train, y_train)
 
-            st.success("Model and Encoder Loaded Successfully")
+                    y_pred = model.predict(X_test)
+                    acc = accuracy_score(y_test, y_pred)
 
-        except:
-            st.error("No saved model found. Train first.")
+                    joblib.dump(model, "hobby.pkl")
 
-    # =========================
-    # PREDICTION
-    # =========================
+                    st.success("Model Trained Successfully")
+                    st.write("Accuracy:", round(acc * 100, 2), "%")
 
-    elif menu == "Prediction":
+        # =========================
+        # LOAD MODEL (NEW MENU)
+        # =========================
 
-        st.title("Predict Hobby")
+        elif menu == "Load Model":
 
-        model = st.session_state.model
-        encoder = st.session_state.encoder
-
-        if model is None or encoder is None:
-            st.warning("Please load model first from 'Load Model'")
-            st.stop()
-
-        Olympiad_Participation = st.selectbox("Olympiad Participation", [0, 1])
-        Scholarship = st.selectbox("Scholarship", [0, 1])
-        School = st.selectbox("School ", [0, 1])
-        Fav_sub = st.number_input("Favourite Subject (Encoded Value)", min_value=0, step=1)
-
-        Projects = st.selectbox("Projects", [0, 1])
-        Grasp_pow = st.number_input("Grasp Percentage (1-10)", min_value=1, max_value=10, step=1)
-        Time_sprt = st.number_input("Time Spent on Sports", min_value=0)
-
-        Medals = st.selectbox("Medals", [0, 1])
-        Career_sprt = st.selectbox("Career Support", [0, 1])
-        Act_sprt = st.selectbox("Activity Support", [0, 1])
-
-        Fant_arts = st.selectbox("Interested in Arts", [0, 1])
-        Won_arts = st.selectbox("Won Arts Competition", [0, 1])
-        Time_art = st.number_input("Time Spent on Arts", min_value=0)
-
-
-        if st.button("Predict"):
+            st.title("Load Saved Model")
 
             try:
-                data = [[
-                    Olympiad_Participation,
-                Scholarship,
-                School,
-                Fav_sub,
-                Projects,
-                Grasp_pow,
-                Time_sprt,
-                Medals,
-                Career_sprt,
-                Act_sprt,
-                Fant_arts,
-                Won_arts,
-                Time_art
-                ]]
+                st.session_state.model = joblib.load("hobby.pkl")
+                st.session_state.encoder = joblib.load("target_encoder.pkl")
 
-                pred = model.predict(data)
-                result = encoder.inverse_transform(pred)[0]
+                st.success("Model and Encoder Loaded Successfully")
 
-                st.success(f"Predicted Hobby: {result}")
+            except Exception:
+                st.error("No saved model found. Train first.")
 
-            except Exception as e:
-                st.error(f"Prediction Error: {e}")
-    
+        # =========================
+        # PREDICTION
+        # =========================
+
+        elif menu == "Prediction":
+
+            st.title("Predict Hobby")
+
+            model = st.session_state.model
+            encoder = st.session_state.encoder
+
+            if model is None or encoder is None:
+                st.warning("Please load model first from 'Load Model'")
+                st.stop()
+
+            Olympiad_Participation = st.selectbox("Olympiad Participation", [0, 1])
+            Scholarship = st.selectbox("Scholarship", [0, 1])
+            School = st.selectbox("School ", [0, 1])
+            Fav_sub = st.number_input("Favourite Subject (Encoded Value)", min_value=0, step=1)
+
+            Projects = st.selectbox("Projects", [0, 1])
+            Grasp_pow = st.number_input("Grasp Percentage (1-10)", min_value=1, max_value=10, step=1)
+            Time_sprt = st.number_input("Time Spent on Sports", min_value=0)
+
+            Medals = st.selectbox("Medals", [0, 1])
+            Career_sprt = st.selectbox("Career Support", [0, 1])
+            Act_sprt = st.selectbox("Activity Support", [0, 1])
+
+            Fant_arts = st.selectbox("Interested in Arts", [0, 1])
+            Won_arts = st.selectbox("Won Arts Competition", [0, 1])
+            Time_art = st.number_input("Time Spent on Arts", min_value=0)
+
+
+            if st.button("Predict"):
+
+                try:
+                    data = [[
+                        Olympiad_Participation,
+                        Scholarship,
+                        School,
+                        Fav_sub,
+                        Projects,
+                        Grasp_pow,
+                        Time_sprt,
+                        Medals,
+                        Career_sprt,
+                        Act_sprt,
+                        Fant_arts,
+                        Won_arts,
+                        Time_art
+                    ]]
+
+                    pred = model.predict(data)
+                    result = encoder.inverse_transform(pred)[0]
+
+                    st.success(f"Predicted Hobby: {result}")
+
+                except Exception as e:
+                    st.error(f"Prediction Error: {e}")

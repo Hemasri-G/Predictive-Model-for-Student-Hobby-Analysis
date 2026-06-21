@@ -457,7 +457,7 @@ elif st.session_state.page is None:
     # CLEANING + ENCODING
     # =========================
 
-    elif menu == "Data Cleaning":
+   elif menu == "Data Cleaning":
 
         st.title("Data Cleaning")
 
@@ -468,33 +468,42 @@ elif st.session_state.page is None:
 
         else:
 
+            st.write("Column names:", list(df.columns))
+            st.write("Column types:", df.dtypes)
+
             st.write("Missing Values")
             st.write(df.isnull().sum())
 
             st.write("Duplicates:", df.duplicated().sum())
 
             if st.button("Remove Duplicates"):
-                df.drop_duplicates(inplace=True)
+                df = df.drop_duplicates()
+                st.session_state.df = df
                 st.success("Removed")
 
             if st.button("Apply Encoding"):
 
-                feature_cols = df.columns.drop("Predicted Hobby")
+                target_col = "Predicted Hobby"
 
-                for col in feature_cols:
-                    if df[col].dtype == "object":
-                        le = LabelEncoder()
-                        df[col] = le.fit_transform(df[col])
+                if target_col not in df.columns:
+                    st.error(f"Column '{target_col}' not found! Actual columns: {list(df.columns)}")
+                else:
+                    feature_cols = [c for c in df.columns if c != target_col]
 
-                target_encoder = LabelEncoder()
-                df["Predicted Hobby"] = target_encoder.fit_transform(df["Predicted Hobby"])
+                    for col in feature_cols:
+                        if df[col].dtype == "object":
+                            le = LabelEncoder()
+                            df[col] = le.fit_transform(df[col].astype(str))
 
-                joblib.dump(target_encoder, "target_encoder.pkl")
+                    target_encoder = LabelEncoder()
+                    df[target_col] = target_encoder.fit_transform(df[target_col].astype(str))
 
-                st.session_state.df = df
+                    joblib.dump(target_encoder, "target_encoder.pkl")
 
-                st.success("Encoding Done")
-                st.dataframe(df.head())
+                    st.session_state.df = df
+
+                    st.success("Encoding Done")
+                    st.dataframe(df.head())
 
     # =========================
     # TRAIN MODEL

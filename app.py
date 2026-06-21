@@ -208,8 +208,12 @@ else:
         ]
 
     )
-    if menu:
+    if "last_menu" not in st.session_state:
+        st.session_state.last_menu = menu
+
+    if menu != st.session_state.last_menu:
         st.session_state.page = None
+        st.session_state.last_menu = menu
 
    
     st.sidebar.markdown("---")

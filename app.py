@@ -210,7 +210,7 @@ else:
     )
 
     if menu:
-    st.session_state.page = None
+       st.session_state.page = None
 
     st.sidebar.markdown("---")
     st.sidebar.subheader("🧠 Brain Booster")

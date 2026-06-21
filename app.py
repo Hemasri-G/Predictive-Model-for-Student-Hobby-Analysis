@@ -493,7 +493,7 @@ else:
                         feature_cols = [col for col in df.columns if col != target_col]
 
                         for col in feature_cols:
-                            if df[col].dtype == "object":
+                            if not pd.api.types.is_numeric_dtype(df[col]):
                                 le = LabelEncoder()
                                 df[col] = le.fit_transform(df[col].astype(str))
 

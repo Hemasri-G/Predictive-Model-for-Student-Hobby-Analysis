@@ -584,20 +584,23 @@ else:
             if model is None or encoder is None:
                 st.warning("Please load model first from 'Load Model'")
                 st.stop()
-
             Olympiad_Participation = st.selectbox("Olympiad Participation", [0, 1], key="pred_olympiad")
-Scholarship = st.selectbox("Scholarship", [0, 1], key="pred_scholarship")
-School = st.selectbox("School ", [0, 1], key="pred_school")
-Fav_sub = st.number_input("Favourite Subject (Encoded Value)", min_value=0, step=1, key="pred_fav_sub")
-Projects = st.selectbox("Projects", [0, 1], key="pred_projects")
-Grasp_pow = st.number_input("Grasp Percentage (1-10)", min_value=1, max_value=10, step=1, key="pred_grasp")
-Time_sprt = st.number_input("Time Spent on Sports", min_value=0, key="pred_time_sprt")
-Medals = st.selectbox("Medals", [0, 1], key="pred_medals")
-Career_sprt = st.selectbox("Career Support", [0, 1], key="pred_career")
-Act_sprt = st.selectbox("Activity Support", [0, 1], key="pred_act")
-Fant_arts = st.selectbox("Interested in Arts", [0, 1], key="pred_fant_arts")
-Won_arts = st.selectbox("Won Arts Competition", [0, 1], key="pred_won_arts")
-Time_art = st.number_input("Time Spent on Arts", min_value=0, key="pred_time_art")
+            Scholarship = st.selectbox("Scholarship", [0, 1], key="pred_scholarship")
+            School = st.selectbox("School ", [0, 1], key="pred_school")
+            Fav_sub = st.number_input("Favourite Subject (Encoded Value)", min_value=0, step=1, key="pred_fav_sub")
+
+            Projects = st.selectbox("Projects", [0, 1], key="pred_projects")
+            Grasp_pow = st.number_input("Grasp Percentage (1-10)", min_value=1, max_value=10, step=1, key="pred_grasp")
+            Time_sprt = st.number_input("Time Spent on Sports", min_value=0, key="pred_time_sprt")
+
+            Medals = st.selectbox("Medals", [0, 1], key="pred_medals")
+            Career_sprt = st.selectbox("Career Support", [0, 1], key="pred_career")
+            Act_sprt = st.selectbox("Activity Support", [0, 1], key="pred_act")
+
+            Fant_arts = st.selectbox("Interested in Arts", [0, 1], key="pred_fant_arts")
+            Won_arts = st.selectbox("Won Arts Competition", [0, 1], key="pred_won_arts")
+            Time_art = st.number_input("Time Spent on Arts", min_value=0, key="pred_time_art")
+
             if st.button("Predict"):
 
                 try:

@@ -621,8 +621,8 @@ else:
                     ]]
 
                     pred = model.predict(data)
-                    result = encoder.inverse_transform(pred)[0]
-
+                    pred_label = int(pred[0])  # ensure it's an integer index
+                    result = encoder.classes_[pred_label] 
                     st.success(f"Predicted Hobby: {result}")
 
                 except Exception as e:

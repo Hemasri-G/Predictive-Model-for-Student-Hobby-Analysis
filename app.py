@@ -621,7 +621,7 @@ else:
                     ]]
 
                     pred = model.predict(data)
-                    pred_label = int(pred[0])  # ensure it's an integer index
+                    pred_label = int(pred[0])  
                     result = encoder.classes_[pred_label] 
                     st.success(f"Predicted Hobby: {result}")
 
